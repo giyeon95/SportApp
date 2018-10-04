@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+<LinearLayout
+    android:id="@+id/pilaLinear"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/meaningPilates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="# 필라테스란?"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20dp"
+        android:layout_margin="5dp"
+        android:paddingLeft="5dp"
+        />
+
+
+
+    <ImageView
+        android:id="@+id/introPilaImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/whatPila"
+        android:lineSpacingMultiplier="1.1"
+        />
+
+
+
+    <TextView
+        android:id="@+id/benefitPilates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="# 필라테스의 효능"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20dp"
+        android:paddingLeft="5dp"
+        />
+
+
+    <ExpandableListView
+        android:id="@+id/pila_expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indicatorLeft="?android:attr/expandableListPreferredChildIndicatorLeft"
+        android:divider="@android:color/white"
+        android:dividerHeight="0.5dp"/>
+
+</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TestBar</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="whatPila">필라테스는 몸의 유연성을 길러주는 요가와 근육을 부드럽게 풀어주는 스트레칭, 그리고 근육의 힘을 키우는 웨이트 트레이닝의 장점만을 모아놓은 운동입니다. 다이어트는 물론 자세나 체형 교정에도 효과가 좋은 운동으로 알려져 있습니다.</string>
+    <string name="whatAer">에어로빅은 aerobics exercise의 준말로 일정 시간 동안 몸 안의 최대한 많은 양의 산소를 공급함으로 폐와 심장 기능을 촉진시켜 신체의 건강을 증진시키는 유산소 운동입니다.</string>
+
+</resources>

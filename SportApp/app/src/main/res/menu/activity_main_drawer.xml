@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+
+    <item android:title="Pilates">
+        <menu>
+            <item
+                android:id="@+id/nav_Pla_Itd"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Pilates Introduce" />
+            <item
+                android:id="@+id/nav_Pla_Main"
+                android:icon="@mipmap/tmp_pilates"
+                android:title="Pilates Course" />
+        </menu>
+    </item>
+
+    <item android:title="Aerobic">
+        <menu>
+            <item
+                android:id="@+id/nav_Aer_Itd"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Aerobic Introduce" />
+            <item
+                android:id="@+id/nav_Aer_Main"
+                android:icon="@mipmap/tmp_aerobic"
+                android:title="Aerobic Course" />
+        </menu>
+    </item>
+
+
+</menu>
