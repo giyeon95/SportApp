@@ -50,9 +50,6 @@ public class Main_Aer extends Fragment {
 
         init_BtnEvent(view);
 
-
-        //setBeginnerBtn(view);
-
         return view;
     }
 
@@ -67,8 +64,8 @@ public class Main_Aer extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Beginner Start", Toast.LENGTH_SHORT).show();
-                Course_Aer_Beginner.getInstance().setContext(context);
-                manager.beginTransaction().replace(R.id.content_main, Course_Aer_Beginner.getInstance()).commit();
+                Course_Container.getInstance().setContext(context,"aer",0);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
@@ -76,6 +73,8 @@ public class Main_Aer extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "intermediate Start", Toast.LENGTH_SHORT).show();
+                Course_Container.getInstance().setContext(context,"aer",1);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
@@ -83,22 +82,12 @@ public class Main_Aer extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Expert Start", Toast.LENGTH_SHORT).show();
+                Course_Container.getInstance().setContext(context,"aer",2);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
     }
-/*
-    private void setBeginnerBtn(View view) {
-        beginnerBtn = (ImageView)view.findViewById(R.id.beginner_aer);
-        Glide.with(view).load(R.drawable.tmp_aer_course_beginner).into(beginnerBtn);
-        beginnerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Start Beginner Course", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-*/
 
     private static class LazyHolder {
         public static final Main_Aer INSTANCE = new Main_Aer();

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical"
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
@@ -13,52 +13,48 @@
            android:orientation="vertical">
 
               <com.google.android.exoplayer2.ui.PlayerView
-                      android:id="@+id/aer_beginner_video"
+                      android:id="@+id/video"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:focusable="true"
                      />
 
               <TextView
-                  android:id="@+id/aer_beginner_title"
+                  android:id="@+id/title"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="25dp"
                   android:paddingLeft="15dp"
                   android:layout_marginTop="20dp"
-                  android:text="업 코브라"
                   android:textColor="#000"
                   />
 
               <TextView
-                  android:id="@+id/aer_beginner_contents"
+                  android:id="@+id/contents"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingLeft="15dp"
                   android:layout_marginTop="20px"
-                  android:text="@string/upCourvera"
                   android:lineSpacingMultiplier="1.2"
                   />
               <TextView
-                  android:id="@+id/aer_beginner_benefit"
+                  android:id="@+id/benefit"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingLeft="15dp"
                   android:layout_marginTop="20px"
                   android:textColor="#0008ff"
                   android:textStyle="bold"
-                  android:text="@string/courveraBenefit"
                   android:lineSpacingMultiplier="1.2"
                   />
        </LinearLayout>
 
        <TextView
-           android:id="@+id/aer_beginner_progress"
+           android:id="@+id/progress"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:gravity="center_horizontal"
            android:textSize="12dp"
-           android:layout_alignParentBottom="true"
-           android:text="course progress (1/9)"/>
+           android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

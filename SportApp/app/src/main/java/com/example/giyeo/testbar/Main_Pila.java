@@ -65,6 +65,8 @@ public class Main_Pila extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Beginner Start", Toast.LENGTH_SHORT).show();
+                Course_Container.getInstance().setContext(context,"pila",0);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
@@ -72,6 +74,8 @@ public class Main_Pila extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "intermediate Start", Toast.LENGTH_SHORT).show();
+                Course_Container.getInstance().setContext(context,"pila",1);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
@@ -79,6 +83,8 @@ public class Main_Pila extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Expert Start", Toast.LENGTH_SHORT).show();
+                Course_Container.getInstance().setContext(context,"pila",2);
+                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 

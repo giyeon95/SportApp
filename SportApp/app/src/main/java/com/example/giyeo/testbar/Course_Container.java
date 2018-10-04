@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -30,34 +27,30 @@ import com.google.android.exoplayer2.util.Util;
 
 
 
-public class Course_Aer_Beginner extends Fragment{
+
+public class Course_Container extends Fragment{
 
     private Context context;
+    private String course;
+    private int level;
 
-    private final Uri firstVideoURL = Uri.parse("http://35.187.218.253/testmp4.mp4");
-    private final Uri secondVideoURL = Uri.parse("http://35.187.218.253/Tridiary.mp4");
     private  ExoPlayer player;
-    private TextView titleText;
-    private TextView contentsText;
-    private TextView progressText;
-    private TextView benefitText;
-    private Course_Data_Connect dataConnect;
-
-
 
     private int pageNum;
     private View view;
 
     @SuppressLint("ValidFragment")
-    private Course_Aer_Beginner() {
+    private Course_Container() {
 
     }
 
-    public void setContext(Context context) {
+    public void setContext(Context context,String course ,int level) {
         this.context = context;
+        this.course = course;
+        this.level = level;
     }
 
-    public static Course_Aer_Beginner getInstance() {
+    public static Course_Container getInstance() {
         return LazyHolder.INSTANCE;
     }
 
@@ -70,17 +63,21 @@ public class Course_Aer_Beginner extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.course_aer_beginner,container, false);
+        view = inflater.inflate(R.layout.main_course_container,container, false);
+
+        MainSetContents.getInstance().setContext(context,view);
+        init_Contents();
+        checkSetVideo(true);
         init_Vedio(view);
 
         return view;
     }
 
+
     private void init_Vedio(View view) {
 
-        PlayerView playerView = (PlayerView)view.findViewById(R.id.aer_beginner_video);
-
-
+        PlayerView playerView = (PlayerView)view.findViewById(R.id.video);
+        player = null;
         player = ExoPlayerFactory.newSimpleInstance(context);
 
         player.addListener(new Player.EventListener() {
@@ -95,13 +92,13 @@ public class Course_Aer_Beginner extends Fragment{
 
                 switch (reason) {
                     case 0: //change window
-                        init_Contents(true);
+                        updateContents(true);
                         break;
                     case 1: // 15sec priview or before
 
                         break;
                     case 2: //click button and change window
-                        init_Contents(false);
+                        updateContents(false);
                         break;
 
                 }
@@ -111,16 +108,16 @@ public class Course_Aer_Beginner extends Fragment{
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState) {
                     case Player.STATE_BUFFERING:
-                        Log.e("ttatata","BUFFERING");
+                        Log.e("state","BUFFERING");
                         break;
                     case Player.STATE_ENDED:
-                        Log.e("ttatata","END");
+                        Log.e("state","END");
                         break;
                     case Player.STATE_IDLE:
-                        Log.e("ttatata","IDLE");
+                        Log.e("state","IDLE");
                         break;
                     case Player.STATE_READY:
-                        Log.e("ttatata","READY");
+                        Log.e("state","READY");
                         break;
 
                 }
@@ -140,25 +137,41 @@ public class Course_Aer_Beginner extends Fragment{
         );
 
         DataSource.Factory dataSourseFactory = new DefaultDataSourceFactory(context,null,httpDataSourceFactory);
-        MediaSource firstVideo = new ExtractorMediaSource.Factory(dataSourseFactory).createMediaSource(firstVideoURL);
-        MediaSource secondVideo = new ExtractorMediaSource.Factory(dataSourseFactory).createMediaSource(secondVideoURL);
-        ConcatenatingMediaSource clippingMediaSource = new ConcatenatingMediaSource(firstVideo, secondVideo);
 
+        ConcatenatingMediaSource clippingMediaSource = new ConcatenatingMediaSource();
+        clippingMediaSource.clear();
 
+        for (Uri uri: MainUriSource.getInstance().getUriList()) {
+            MediaSource video = new ExtractorMediaSource.Factory(dataSourseFactory).createMediaSource(uri);
+            clippingMediaSource.addMediaSource(video);
+        }
 
         player.prepare(clippingMediaSource);
         player.setPlayWhenReady(true);
 
     }
 
-    private void init_Contents(boolean autoChange) {
+    private void init_Contents() {
+        if(course == "aer") {
+            switch (level){
+                case 0: MainSetContents.getInstance().aerBeginnerContents(0); break;
+                case 1: MainSetContents.getInstance().aerIntermediateContents(0); break;
+                case 2: MainSetContents.getInstance().aerExpertContents(0); break;
+            }
+        }
+        if(course == "pila") {
+            switch (level){
+                case 0: MainSetContents.getInstance().pilaBeginnerContents(0); break;
+                case 1: MainSetContents.getInstance().pilaIntermediateContents(0); break;
+                case 2: MainSetContents.getInstance().pilaExpertContents(0); break;
+            }
+        }
+    }
 
-        titleText = (TextView)view.findViewById(R.id.aer_beginner_title);
-        contentsText = (TextView)view.findViewById(R.id.aer_beginner_contents);
-        progressText = (TextView)view.findViewById(R.id.aer_beginner_progress);
-        benefitText = (TextView)view.findViewById(R.id.aer_beginner_benefit);
 
-        setContentsText();
+    private void updateContents(boolean autoChange) {
+
+        checkSetVideo(false);
 
         if(autoChange) { //시간이 되었을때 자동으로 움직임
 
@@ -167,32 +180,47 @@ public class Course_Aer_Beginner extends Fragment{
 
         }
     }
-    private void setContentsText() {
 
-        switch (pageNum) {
-            case 0 : {
-                titleText.setText(dataConnect.getInstance().courseAerBeginner1.getTitleText());
-                contentsText.setText(dataConnect.getInstance().courseAerBeginner1.getContentsText());
-                progressText.setText(dataConnect.getInstance().courseAerBeginner1.getProgressText());
-                benefitText.setText(dataConnect.getInstance().courseAerBeginner1.getBenefitText());
-                break;
-            }
-            case 1 : {
-                titleText.setText(dataConnect.getInstance().courseAerBeginner2.getTitleText());
-                contentsText.setText(dataConnect.getInstance().courseAerBeginner2.getContentsText());
-                progressText.setText(dataConnect.getInstance().courseAerBeginner2.getProgressText());
-                benefitText.setText(dataConnect.getInstance().courseAerBeginner2.getBenefitText());
-                break;
-            }
-            case 2 : {
-                break;
+    private void checkSetVideo(boolean isVedio) {
+
+        if(course == "aer") { //Aerobic
+            switch (level) {
+                case 0: //Beginner
+                    if(isVedio) { MainUriSource.getInstance().aerBeginnerUri(); }
+                        else { MainSetContents.getInstance().aerBeginnerContents(pageNum);}
+                    break;
+                case 1: //Intermediate
+                    if(isVedio) { MainUriSource.getInstance().aerIntermediateUri(); }
+                    else { MainSetContents.getInstance().aerIntermediateContents(pageNum);}
+                    break;
+                case 2: //Expert
+                    if(isVedio) { MainUriSource.getInstance().aerExpertUri(); }
+                    else { MainSetContents.getInstance().aerExpertContents(pageNum);}
+                    break;
             }
         }
+        if(course == "pila") { //Aerobic
+            switch (level) {
+                case 0: //Beginner
+                    if(isVedio) {MainUriSource.getInstance().pilaBeginnerUri(); }
+                    else {MainSetContents.getInstance().pilaBeginnerContents(pageNum);}
+                    break;
+                case 1: //Intermediate
+                    if(isVedio) {MainUriSource.getInstance().pilaIntermediateUri();}
+                    else {MainSetContents.getInstance().pilaIntermediateContents(pageNum);}
+                    break;
+                case 2: //Expert
+                    if(isVedio) {MainUriSource.getInstance().pilaExpertUri();}
+                    else {MainSetContents.getInstance().pilaExpertContents(pageNum);}
+                    break;
+            }
+        }
+
     }
 
 
     private static class LazyHolder {
-        public static final Course_Aer_Beginner INSTANCE = new Course_Aer_Beginner();
+        public static final Course_Container INSTANCE = new Course_Container();
     }
 
 }
