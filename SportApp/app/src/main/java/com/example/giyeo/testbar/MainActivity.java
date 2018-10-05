@@ -2,6 +2,7 @@ package com.example.giyeo.testbar;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         switch (id) {
             case R.id.nav_Pla_Itd : {
                 Intro_Pila.getInstance().setContext(this);
@@ -154,4 +154,13 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void vedioStart(String course, int level) {
+            Intent intent = new Intent(this,Course_Container.class);
+            intent.putExtra("course",course);
+            intent.putExtra("level",level);
+            startActivity(intent);
+
+    }
+
 }

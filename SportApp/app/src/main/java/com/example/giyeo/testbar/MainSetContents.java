@@ -1,13 +1,9 @@
 package com.example.giyeo.testbar;
 
-import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 public class MainSetContents {
 
-    private Context context;
-    private View view;
     private TextView titleText;
     private TextView contentsText;
     private TextView progressText;
@@ -15,14 +11,14 @@ public class MainSetContents {
 
     private MainSetContents() {}
 
-    public void setContext(Context context, View view){
-        this.context = context;
-        this.view = view;
+    public void setContext(TextView titleText, TextView contentsText, TextView progressText, TextView benefitText){
 
-        titleText = (TextView)view.findViewById(R.id.title);
-        contentsText = (TextView)view.findViewById(R.id.contents);
-        progressText = (TextView)view.findViewById(R.id.progress);
-        benefitText = (TextView)view.findViewById(R.id.benefit);
+
+
+        this.titleText = titleText;
+        this.contentsText = contentsText;
+        this.progressText = progressText;
+        this.benefitText = benefitText;
     }
 
     public void aerBeginnerContents(int pageNum) {

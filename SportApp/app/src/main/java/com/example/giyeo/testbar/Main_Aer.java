@@ -60,12 +60,14 @@ public class Main_Aer extends Fragment {
         courseBtn_3 = (Button) view.findViewById(R.id.main_aer_btn_3); //expert
 
 
+
+
         courseBtn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Beginner Start", Toast.LENGTH_SHORT).show();
-                Course_Container.getInstance().setContext(context,"aer",0);
-                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
+
+                ((MainActivity)getActivity()).vedioStart("aer",0);
             }
         });
 
@@ -73,8 +75,10 @@ public class Main_Aer extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "intermediate Start", Toast.LENGTH_SHORT).show();
-                Course_Container.getInstance().setContext(context,"aer",1);
-                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
+
+                ((MainActivity)getActivity()).vedioStart("aer",1);
+                //Course_Container.getInstance().setContext(context,"aer",1);
+                //manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 
@@ -82,8 +86,9 @@ public class Main_Aer extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Expert Start", Toast.LENGTH_SHORT).show();
-                Course_Container.getInstance().setContext(context,"aer",2);
-                manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
+                ((MainActivity)getActivity()).vedioStart("aer",2);
+                //Course_Container.getInstance().setContext(context,"aer",2);
+                //manager.beginTransaction().replace(R.id.content_main, Course_Container.getInstance()).commit();
             }
         });
 

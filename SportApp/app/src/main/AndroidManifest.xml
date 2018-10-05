@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.giyeo.testbar" android:targetSandboxVersion="1">
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -20,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Course_Container"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:supportsRtl="true"/>
+
     </application>
 
 </manifest>

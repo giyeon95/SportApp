@@ -1,12 +1,13 @@
 package com.example.giyeo.testbar;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 public class MainUriSource {
 
-    private ArrayList<Uri> uriList = new ArrayList<>();
+    private static ArrayList<Uri> uriList = new ArrayList<>();
 
     private MainUriSource () {
 

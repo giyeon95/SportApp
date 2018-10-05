@@ -1,16 +1,15 @@
 package com.example.giyeo.testbar;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -25,60 +24,54 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
+public class Course_Container extends AppCompatActivity{
 
-public class Course_Container extends Fragment{
-
-    private Context context;
     private String course;
     private int level;
-
     private  ExoPlayer player;
-
     private int pageNum;
-    private View view;
 
-    @SuppressLint("ValidFragment")
-    private Course_Container() {
 
-    }
+    private ConcatenatingMediaSource clippingMediaSource;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
-    public void setContext(Context context,String course ,int level) {
-        this.context = context;
-        this.course = course;
-        this.level = level;
-    }
 
-    public static Course_Container getInstance() {
-        return LazyHolder.INSTANCE;
+
+    public Course_Container() {
+
     }
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.main_course_container);
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.main_course_container,container, false);
+        course = getIntent().getStringExtra("course");
+        level = getIntent().getIntExtra("level",0);
 
-        MainSetContents.getInstance().setContext(context,view);
+        setfont();
+        TextView titleText = (TextView)findViewById(R.id.title);
+        TextView contentsText = (TextView)findViewById(R.id.contents);
+        TextView progressText = (TextView)findViewById(R.id.progress);
+        TextView benefitText = (TextView)findViewById(R.id.benefit);
+
+        MainSetContents.getInstance().setContext(titleText,contentsText,progressText,benefitText);
         init_Contents();
         checkSetVideo(true);
-        init_Vedio(view);
-
-        return view;
+        init_Vedio();
     }
 
 
-    private void init_Vedio(View view) {
+    private void init_Vedio() {
 
-        PlayerView playerView = (PlayerView)view.findViewById(R.id.video);
-        player = null;
-        player = ExoPlayerFactory.newSimpleInstance(context);
+        PlayerView playerView = (PlayerView)findViewById(R.id.video);
+        player = ExoPlayerFactory.newSimpleInstance(this);
 
         player.addListener(new Player.EventListener() {
             @Override
@@ -108,16 +101,16 @@ public class Course_Container extends Fragment{
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState) {
                     case Player.STATE_BUFFERING:
-                        Log.e("state","BUFFERING");
+                        Log.e("state!!!","BUFFERING");
                         break;
                     case Player.STATE_ENDED:
-                        Log.e("state","END");
+                        Log.e("state!!!","END");
                         break;
                     case Player.STATE_IDLE:
-                        Log.e("state","IDLE");
+                        Log.e("state!!!","IDLE");
                         break;
                     case Player.STATE_READY:
-                        Log.e("state","READY");
+                        Log.e("state!!!","READY");
                         break;
 
                 }
@@ -127,7 +120,7 @@ public class Course_Container extends Fragment{
 
         playerView.setPlayer(player);
 
-        String userAgent = Util.getUserAgent(context,"TestBar");
+        String userAgent = Util.getUserAgent(this,"TestBar");
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
             userAgent,
                 null,
@@ -136,10 +129,10 @@ public class Course_Container extends Fragment{
                 true
         );
 
-        DataSource.Factory dataSourseFactory = new DefaultDataSourceFactory(context,null,httpDataSourceFactory);
+        DataSource.Factory dataSourseFactory = new DefaultDataSourceFactory(this,null,httpDataSourceFactory);
 
-        ConcatenatingMediaSource clippingMediaSource = new ConcatenatingMediaSource();
-        clippingMediaSource.clear();
+        clippingMediaSource = new ConcatenatingMediaSource();
+
 
         for (Uri uri: MainUriSource.getInstance().getUriList()) {
             MediaSource video = new ExtractorMediaSource.Factory(dataSourseFactory).createMediaSource(uri);
@@ -152,14 +145,14 @@ public class Course_Container extends Fragment{
     }
 
     private void init_Contents() {
-        if(course == "aer") {
+        if(course.equals("aer")) {
             switch (level){
                 case 0: MainSetContents.getInstance().aerBeginnerContents(0); break;
                 case 1: MainSetContents.getInstance().aerIntermediateContents(0); break;
                 case 2: MainSetContents.getInstance().aerExpertContents(0); break;
             }
         }
-        if(course == "pila") {
+        if(course.equals("pila")) {
             switch (level){
                 case 0: MainSetContents.getInstance().pilaBeginnerContents(0); break;
                 case 1: MainSetContents.getInstance().pilaIntermediateContents(0); break;
@@ -183,7 +176,7 @@ public class Course_Container extends Fragment{
 
     private void checkSetVideo(boolean isVedio) {
 
-        if(course == "aer") { //Aerobic
+        if(course.equals("aer")) { //Aerobic
             switch (level) {
                 case 0: //Beginner
                     if(isVedio) { MainUriSource.getInstance().aerBeginnerUri(); }
@@ -199,7 +192,7 @@ public class Course_Container extends Fragment{
                     break;
             }
         }
-        if(course == "pila") { //Aerobic
+        if(course.equals("pila")) { //Aerobic
             switch (level) {
                 case 0: //Beginner
                     if(isVedio) {MainUriSource.getInstance().pilaBeginnerUri(); }
@@ -218,9 +211,35 @@ public class Course_Container extends Fragment{
 
     }
 
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
 
-    private static class LazyHolder {
-        public static final Course_Container INSTANCE = new Course_Container();
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            //super.onBackPressed();
+            player = null;
+            clippingMediaSource.clear();
+            this.finish();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(this, "뒤로 가시겠습니까?", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
+    private void setfont() {
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("HoonPinkpungchaR.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
 }
