@@ -3,6 +3,9 @@ package com.example.giyeo.testbar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,10 +16,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import org.w3c.dom.Text;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -36,6 +50,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        GlobalApplication.setCurrentActivity(this);
+
+        setNavHeader();
+
+        getHashKey();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -54,6 +73,21 @@ public class MainActivity extends AppCompatActivity
         Intro_Main.getInstance().setContext(this);
         manager.beginTransaction().replace(R.id.content_main, Intro_Main.getInstance()).commit();
 
+    }
+
+    private void setNavHeader() {
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View navHeaderView = navigationView.getHeaderView(0);
+
+        TextView userName = (TextView)navHeaderView.findViewById(R.id.userNameText);
+        ImageView userImage = (ImageView)navHeaderView.findViewById(R.id.userProfile);
+        TextView userLevel = (TextView)navHeaderView.findViewById(R.id.userLevel);
+
+        userName.setText("사용자 : "+UserStatus.getUserName());
+        userLevel.setText("일렬번호 : "+UserStatus.getUserId());
+        Glide.with(navHeaderView).load(UserStatus.getUserImagePath()).apply(new RequestOptions().circleCrop()).into(userImage);
     }
 
     private void setStatusBar() {
@@ -162,5 +196,21 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
     }
+
+    private void getHashKey(){
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("com.example.giyeo.testbar", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("getHashKey","key_hash="+ Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

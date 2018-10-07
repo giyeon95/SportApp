@@ -55,6 +55,8 @@ public class Course_Container extends AppCompatActivity{
         course = getIntent().getStringExtra("course");
         level = getIntent().getIntExtra("level",0);
 
+        GlobalApplication.setCurrentActivity(this);
+
         setfont();
         TextView titleText = (TextView)findViewById(R.id.title);
         TextView contentsText = (TextView)findViewById(R.id.contents);
