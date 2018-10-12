@@ -8,10 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -28,14 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -64,8 +55,7 @@ public class MainActivity extends AppCompatActivity
         GlobalApplication.setCurrentActivity(this);
 
         setNavHeader();
-        InsertData task = new InsertData();
-        task.execute("http://35.187.218.253/user/insertUser.php",String.valueOf(UserStatus.getUserId()), UserStatus.getUserName());
+
         //connectDataBase();
 
         getHashKey();
@@ -164,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 */
     }
 
-    private void setNavHeader() {
+    public void setNavHeader() {
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -174,15 +164,14 @@ public class MainActivity extends AppCompatActivity
         ImageView userImage = (ImageView)navHeaderView.findViewById(R.id.userProfile);
         TextView userLevel = (TextView)navHeaderView.findViewById(R.id.userLevel);
 
-        userName.setText("사용자 : "+UserStatus.getUserName());
-        userLevel.setText("일렬번호 : "+UserStatus.getUserId());
-        Log.e("mainActivity", UserStatus.getUserImagePath());
+        userName.setText("회원 : "+UserStatus.getUserName());
+        userLevel.setText("등급 : "+UserStatus.getUserLv());
+
         Glide.with(navHeaderView).load(UserStatus.getUserImagePath()).apply(new RequestOptions().circleCrop()).into(userImage);
 
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intro_Main.getInstance().init_userStatus();
                 manager.beginTransaction().replace(R.id.content_main, Intro_Main.getInstance()).commit();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -316,117 +305,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    class InsertData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(MainActivity.this,
-                    "Please Wait", null, true, true);
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            progressDialog.dismiss();
-            //mTextViewResult.setText(result);
-            Log.d(TAG, "POST response  - " + result);
-
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONObject jsonObj = jsonObject.getJSONObject("0");
-
-                UserStatus.setAllCalorie(Integer.parseInt(jsonObj.getString("calorie")));
-                UserStatus.setAllTime(Integer.parseInt(jsonObj.getString("time")));
-
-                switch (Integer.parseInt(jsonObj.getString("lv"))) {
-                    case 1:
-                        UserStatus.setUserLv("Beginner");
-                        break;
-                    case 2:
-                        UserStatus.setUserLv("Intermediate");
-                        break;
-                    case 3:
-                        UserStatus.setUserLv("Expert");
-                        break;
-                }
-                Log.e(TAG,"User Status : "+UserStatus.getUserLv() + ", "+UserStatus.getAllTime());
-            } catch(Exception e) {
-                Log.e(TAG,"Error Reason : "+ e);
-            }
-        }
-
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String id = (String)params[1];
-            String name = (String)params[2];
-
-            String serverURL = (String)params[0];
-            String postParameters = "id=" + id + "&name=" + name;
-
-
-            try {
-
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.connect();
-
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-
-                bufferedReader.close();
-
-
-                return sb.toString();
-
-
-            } catch (Exception e) {
-
-                Log.d(TAG, "InsertData: Error ", e);
-
-                return new String("Error: " + e.getMessage());
-            }
-
-        }
-    }
 
 }
