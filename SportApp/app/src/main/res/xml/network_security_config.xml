@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted = "true"
         tools:ignore="NetworkSecurityConfig">
         <domain includeSubdomains="true">35.187.218.253</domain>
+        <domain includeSubdomains="true">35.187.218.253/user</domain>
 
     </domain-config>
 

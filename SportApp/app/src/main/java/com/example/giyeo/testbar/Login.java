@@ -70,9 +70,6 @@ public class Login extends AppCompatActivity {
                 public void onSuccess(UserProfile userProfile) {
                  Log.e(TAG,userProfile.toString());
 
-
-                    long number = userProfile.getId();
-
                     redirectSignupActivity(userProfile);
                 }
             });
