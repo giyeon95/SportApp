@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 }
     apply plugin: 'com.google.gms.google-services'

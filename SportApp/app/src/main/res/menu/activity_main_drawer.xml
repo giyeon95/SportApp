@@ -30,6 +30,21 @@
                 android:title="Aerobic Course" />
         </menu>
     </item>
+    <item android:title="Statistics">
+        <menu>
+            <item
+                android:id="@+id/nav_chart"
+                android:icon="@mipmap/chart"
+                android:title="운동 현황" />
+
+            <item
+                android:id="@+id/nav_ranking"
+                android:icon="@mipmap/ranking"
+                android:title="명예의 전당" />
+        </menu>
+
+
+    </item>
 
 
 </menu>

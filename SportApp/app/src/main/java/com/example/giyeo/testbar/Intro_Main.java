@@ -61,7 +61,7 @@ public class Intro_Main extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         InsertData task = new InsertData();
-        task.execute("http://35.187.218.253/user/insertUser.php",String.valueOf(UserStatus.getUserId()), UserStatus.getUserName());
+        task.execute("http://35.187.218.253/user/insertUser.php",String.valueOf(UserStatus.getUserId()), UserStatus.getUserName(), UserStatus.getUserImagePath());
     }
 
     @Nullable
@@ -84,8 +84,6 @@ public class Intro_Main extends Fragment {
 
 
         init_userDb();
-
-
 
         return view;
     }
@@ -178,9 +176,10 @@ public class Intro_Main extends Fragment {
 
             String id = (String)params[1];
             String name = (String)params[2];
+            String image = (String)params[3];
 
             String serverURL = (String)params[0];
-            String postParameters = "id=" + id + "&name=" + name;
+            String postParameters = "id=" + id + "&name=" + name + "&image=" + image;
 
 
             try {

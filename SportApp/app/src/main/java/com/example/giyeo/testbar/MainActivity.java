@@ -271,6 +271,16 @@ public class MainActivity extends AppCompatActivity
                 manager.beginTransaction().replace(R.id.content_main, Main_Aer.getInstance(),"AerMain").commit();
                 break;
             }
+            case R.id.nav_chart : {
+                StatisticsChart.getInstance().setContext(this);
+                manager.beginTransaction().replace(R.id.content_main, StatisticsChart.getInstance(),"StaChart").commit();
+                break;
+            }
+            case R.id.nav_ranking : {
+                StatisticsRank.getInstance().setContext(this);
+                manager.beginTransaction().replace(R.id.content_main, StatisticsRank.getInstance(),"StaRank").commit();
+                break;
+            }
             default :
                 Log.e ("ID", "ID Error Check Case Id");
         }
